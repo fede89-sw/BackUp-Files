@@ -1,6 +1,16 @@
 import os
 import shutil
 import sys
+"""
+Scrivi una funzione "file_backup" che sia in grado 
+di effettuare copie di backup di determinati tipi di file, con le seguenti caratteristiche:
+
+- Percorso da scansionare, di backup e tipologia di file da copiare dovranno essere passati dall'utente 
+  tramite input
+- Il programma dovrà verificare la presenza o meno di una cartella di backup al percorso fornito
+  e qualora questa non fosse presente dovrà crearla
+- La funzione dovrà anche gestire l'eventuale scelta da parte dell'utente, di un percorso da scansionare 
+  che non esiste    """
 
 
 class BackUp:
@@ -25,12 +35,13 @@ class BackUp:
   def copy(self):    
     try:
       for cartella, _, files in os.walk(self.scan):
-        os.makedirs(self.backup + self.create_tree(cartella), exist_ok=True)
         for file in files:
           if self.scelta != "all":
             if file.endswith(self.scelta):
+              os.makedirs(self.backup + self.create_tree(cartella), exist_ok=True)
               shutil.copy(os.path.join(cartella,file), self.backup+self.create_tree(cartella))
           else:
+            os.makedirs(self.backup + self.create_tree(cartella), exist_ok=True)
             shutil.copy(os.path.join(cartella,file), self.backup+self.create_tree(cartella))
     except shutil.SameFileError as e:
       print(f"Errore nella copia dei file...{e}!\nUno o più file del percorso di scansione sono già presenti nella cartella di BackUp!\nRiprova selezionando 2 cartelle distinte!(Se i file sono nel Desktop,assicurati di metterli prima in una cartella!)")
